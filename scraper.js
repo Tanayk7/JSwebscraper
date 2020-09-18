@@ -10,11 +10,14 @@ function isSubStringOf(str1, str2) {
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+  const page_url = "https://www.indiatimes.com/news";
+  const domain_name = "www.indiatimes.com";
 
   let num_images = 0;
   let num_links = 0;
+  let exitLinks = [];
 
-  await page.goto("https://www.indiatimes.com/news");
+  await page.goto(page_url);
 
   const links = await page.evaluate(() => {
     return [...document.body.getElementsByTagName("a")].map((element) =>
@@ -27,9 +30,6 @@ function isSubStringOf(str1, str2) {
       (element) => element.src
     );
   });
-
-  let exitLinks = [];
-  let domain_name = "www.indiatimes.com";
 
   for (let link of links) {
     if (!isSubStringOf(link, domain_name) && link !== "") {
